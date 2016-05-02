@@ -30,6 +30,9 @@ Spring boot по умолчанию настраивает h2 на работу 
 # generate db scheme
 spring.jpa.generate-ddl=true
 spring.jpa.hibernate.ddl-auto=create
+
+# load data.sql
+spring.datasource.initialize=true
 ```
 
 Для простоты реализации пример доступен по REST:
