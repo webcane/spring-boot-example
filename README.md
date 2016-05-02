@@ -51,6 +51,7 @@ spring.h2.console.enabled=true
 ```http
 GET localhost:8090/items
 ```
+
 ```http
 POST localhost:8090/items 
 Content-Type: application/json
@@ -59,9 +60,15 @@ Content-Type: application/json
  "description": "short descr"
 }
 ```
+
 ```http
 GET localhost:8090/items/3
 ```
+
 ```http
 GET localhost:8090/items/search
+```
+
+```http
+GET localhost:8090/items/search/findByName?name=new%20item
 ```
