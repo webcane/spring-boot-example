@@ -50,11 +50,18 @@ spring.h2.console.enabled=true
 Примеры http запросов:
 ```http
 GET localhost:8090/items
-
+```
+```http
 POST localhost:8090/items 
 Content-Type: application/json
 { 
  "name": "new item",
  "description": "short descr"
 }
+```
+```http
+GET localhost:8090/items/3
+```
+```http
+GET localhost:8090/items/search
 ```
