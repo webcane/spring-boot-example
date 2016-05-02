@@ -22,7 +22,12 @@ some spring boot examples:
 
 ## h2-default example
 Spring boot по умолчанию настраивает h2 на работу из памяти
-```
+```properties
+# h2 data source
+spring.datasource.url=jdbc:h2:mem:testdb;DB_CLOSE_ON_EXIT=FALSE;DB_CLOSE_DELAY=-1
+spring.datasource.driver-class-name=org.h2.Driver
+spring.datasource.user=sa
+spring.datasource.password=
 ```
 
 В примере используются настройки по умолчанию. Генерим схему БД по Entity и подгружаем начальные данные из скрипта `data.sql`.
