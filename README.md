@@ -48,36 +48,48 @@ spring.h2.console.enabled=true
 
 Для простоты реализации пример доступен по REST. 
 Примеры http запросов:
-```http
-GET localhost:8090/items
-```
 
-```http
-POST localhost:8090/items 
-Content-Type: application/json
-{ 
- "name": "new item",
- "description": "short descr"
-}
-```
+* простотреть все записи
+ ```http
+ GET localhost:8090/items
+ ```
 
-```http
-GET localhost:8090/items/3
-```
+* создать третью запись
+ ```http
+ POST localhost:8090/items 
+ Content-Type: application/json
+ { 
+  "name": "new item",
+  "description": "short descr"
+ }
+ ```
 
-```http
-GET localhost:8090/items/search
-```
+* показать третью запись
+ ```http
+ GET localhost:8090/items/3
+ ```
 
-```http
-GET localhost:8090/items/search/findByName?name=new%20item
-```
+* запросить доступные функции для поиска
+ ```http
+ GET localhost:8090/items/search
+ ```
 
-```http
-PUT localhost:8090/items/3
-Content-Type: application/json
-{
-  "name": "Item3",
-  "description": "long description"
-}
-```
+* поиск записей по функции
+ ```http
+ GET localhost:8090/items/search/findByName?name=new%20item
+ ```
+
+* отредактировать запись используя PUT, PATCH или DELETE
+ ```http
+ PUT localhost:8090/items/3
+ Content-Type: application/json
+ {
+   "name": "Item3",
+   "description": "long description"
+ }
+ ```
+
+* удалить запись
+ ```http
+ DELETE localhost:8090/items/3
+ ```
