@@ -35,7 +35,14 @@ spring.jpa.hibernate.ddl-auto=create
 spring.datasource.initialize=true
 ```
 
-Для простоты реализации пример доступен по REST:
+Разрешаем в приложении работу с h2 консолью:
+```
+spring.h2.console.enabled=true
+```
+Путь к консоли стандартный: `http://localhost:8090/h2-console`
+
+Для простоты реализации пример доступен по REST. 
+Примеры http запросов:
 ```
 GET localhost:8090/items
 ```
