@@ -26,7 +26,7 @@ Spring boot по умолчанию настраивает h2 на работу 
 ```
 
 В примере используются настройки по умолчанию. Генерим схему БД по Entity и подгружаем начальные данные из скрипта `data.sql`.
-```
+```properties
 # generate db scheme
 spring.jpa.generate-ddl=true
 spring.jpa.hibernate.ddl-auto=create
