@@ -48,6 +48,13 @@ spring.h2.console.enabled=true
 
 Для простоты реализации пример доступен по REST. 
 Примеры http запросов:
-```
+```http
 GET localhost:8090/items
+
+POST localhost:8090/items 
+Content-Type: application/json
+{ 
+ "name": "new item",
+ "description": "short descr"
+}
 ```
