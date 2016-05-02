@@ -72,3 +72,12 @@ GET localhost:8090/items/search
 ```http
 GET localhost:8090/items/search/findByName?name=new%20item
 ```
+
+```http
+PUT localhost:8090/items/3
+Content-Type: application/json
+{
+  "name": "Item3",
+  "description": "long description"
+}
+```
