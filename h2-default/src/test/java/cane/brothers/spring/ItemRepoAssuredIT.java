@@ -136,7 +136,7 @@ public class ItemRepoAssuredIT {
 			.then().statusCode(HttpStatus.SC_OK);
 	}
 	
-	//@Test
+	@Test
 	public void cannotFetchByWrongName_ShouldReturnEmptyItems() {
 		RestAssured
 			.when().get("/items/search/findByName?name={name}", "WrongItemPitem")
