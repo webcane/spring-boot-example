@@ -36,13 +36,12 @@ public class ItemRepoAssuredIT {
 	ItemRepository repository;
 	
 	Item testItem;
-	Item testItem4;
+	Item testItem4 = new Item("test4", "test item 4");
 	Item editedItem;
 	
 	@Before
     public void setUp() {
 		testItem = new Item("test3", "test item 3");
-		testItem4 = new Item("test4", "test item 4");
 		editedItem = new Item("itemEd", "item descr");
 
         repository.deleteAll();
