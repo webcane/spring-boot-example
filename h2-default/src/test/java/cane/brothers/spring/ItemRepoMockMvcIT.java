@@ -3,6 +3,7 @@ package cane.brothers.spring;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -111,6 +112,7 @@ public class ItemRepoMockMvcIT {
 		// TODO we can create without content type
 		mockMvc.perform(post("/items")
 				.content(convertObjectToJsonBytes(testItem4)))
+		// TODO 201: isCreated
 		.andExpect(status().isBadRequest());
 	}
 	
@@ -119,9 +121,53 @@ public class ItemRepoMockMvcIT {
 		mockMvc.perform(put("/items/{id}", testItem.getId())
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(convertObjectToJsonBytes(testItem4)))
-		// TODO 204: No Content
-		.andExpect(status().isCreated());
+		// TODO 204: isNoContent
+		.andExpect(status().isOk());
 		// FIXME content is empty
 		//.andExpect(jsonPath("name").value("test4"));
 	}
+	
+	@Test
+	public void canNotEditItemWithoutBody_ShouldReturnBadRequest() throws Exception {
+		mockMvc.perform(put("/items/{id}", testItem4.getId())
+				.contentType(MediaType.APPLICATION_JSON))
+		// TODO 405: isMethodNotAllowed
+		.andExpect(status().isBadRequest());
+	}
+	
+	@Test
+	public void canNotEditItemWithoutContentType_ShouldBadRequest() throws Exception {
+		mockMvc.perform(put("/items/{id}", testItem4.getId())
+				.content(convertObjectToJsonBytes(testItem4)))
+		// TODO 405: isMethodNotAllowed
+		.andExpect(status().isBadRequest());
+	}
+	
+	@Test
+	public void canSearchByName_ShouldReturnItem() throws Exception {
+		mockMvc.perform(get("/items/search/findByName?name={name}", testItem.getName())
+				.contentType(MediaType.APPLICATION_JSON))
+		.andExpect(status().isOk());
+		// TODO check expected name
+	}
+	
+	@Test
+	public void canNotSearchByWrongName_ShouldReturnEmptyItems() throws Exception {
+		mockMvc.perform(get("/items/search/findByName?name={name}", "WrongItemPitem")
+				.contentType(MediaType.APPLICATION_JSON))
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("$._embedded.items").isEmpty());
+	}
+	
+	@Test
+	public void canDelete_ShouldDeleteItem() throws Exception {
+		mockMvc.perform(delete("/items/{id}", testItem.getId()))
+		.andExpect(status().isNoContent());
+	}
+	
+	@Test
+	public void canNotDeleteByWrongId_ShouldReturnNotBound() throws Exception {
+		mockMvc.perform(delete("/items/{id}", 1000L))
+		.andExpect(status().isNotFound());
+	}	
 }
