@@ -1,12 +1,13 @@
 package cane.brothers.spring;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 
 import java.io.IOException;
 
@@ -16,7 +17,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.MediaType;
-//import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -73,22 +73,24 @@ public class ItemRepoMockMvcIT {
 	public void canFindAll_ShouldReturnItems() throws Exception {
 		mockMvc.perform(get("/items"))
 			.andExpect(status().isOk())
-			.andExpect(content().contentType(MediaTypes.HAL_JSON));
+			.andExpect(content().contentType(MediaTypes.HAL_JSON))
 			//.andExpect(jsonPath("$._embedded.items.length()").value(1));
-			//.andDo(print());
+			.andDo(log());
 	}
 	
 	@Test
     public void canFindOne_ShouldReturnItem() throws Exception {
 		mockMvc.perform(get("/items/{id}", testItem.getId()))
         		.andExpect(status().isOk())
-        		.andExpect(jsonPath("$.name").value("test"));
+        		.andExpect(jsonPath("$.name").value("test"))
+    			.andDo(log());
     }
 	
 	@Test
     public void canNotFindOne_ShouldReturnNotFound() throws Exception {
         mockMvc.perform(get("/items/1000"))
-        		.andExpect(status().isNotFound());
+        		.andExpect(status().isNotFound())
+    			.andDo(log());
     }
 	
 	@Test
@@ -96,7 +98,8 @@ public class ItemRepoMockMvcIT {
 		mockMvc.perform(post("/items")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(convertObjectToJsonBytes(testItem4)))
-		.andExpect(status().isCreated());
+		.andExpect(status().isCreated())
+		.andDo(log());
 		// FIXME content is empty
 		//.andExpect(jsonPath("name").value("test4"));
 	}
@@ -104,7 +107,8 @@ public class ItemRepoMockMvcIT {
 	@Test
 	public void canNotAddItemWithoutBody_ShouldReturnBadRequest() throws Exception {
 		mockMvc.perform(post("/items"))
-		.andExpect(status().isBadRequest());
+		.andExpect(status().isBadRequest())
+		.andDo(log());
 	}
 	
 	@Test
@@ -113,7 +117,8 @@ public class ItemRepoMockMvcIT {
 		mockMvc.perform(post("/items")
 				.content(convertObjectToJsonBytes(testItem4)))
 		// TODO 201: isCreated
-		.andExpect(status().isBadRequest());
+		.andExpect(status().isBadRequest())
+		.andDo(log());
 	}
 	
 	@Test
@@ -121,8 +126,9 @@ public class ItemRepoMockMvcIT {
 		mockMvc.perform(put("/items/{id}", testItem.getId())
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(convertObjectToJsonBytes(testItem4)))
-		// TODO 204: isNoContent
-		.andExpect(status().isOk());
+		// 200 or 204
+		.andExpect(status().is2xxSuccessful())
+		.andDo(log());
 		// FIXME content is empty
 		//.andExpect(jsonPath("name").value("test4"));
 	}
@@ -131,23 +137,26 @@ public class ItemRepoMockMvcIT {
 	public void canNotEditItemWithoutBody_ShouldReturnBadRequest() throws Exception {
 		mockMvc.perform(put("/items/{id}", testItem4.getId())
 				.contentType(MediaType.APPLICATION_JSON))
-		// TODO 405: isMethodNotAllowed
-		.andExpect(status().isBadRequest());
+		// 400 Bad Request or  405 isMethodNotAllowed
+		.andExpect(status().is4xxClientError())
+		.andDo(log());
 	}
 	
 	@Test
 	public void canNotEditItemWithoutContentType_ShouldBadRequest() throws Exception {
 		mockMvc.perform(put("/items/{id}", testItem4.getId())
 				.content(convertObjectToJsonBytes(testItem4)))
-		// TODO 405: isMethodNotAllowed
-		.andExpect(status().isBadRequest());
+		// 400 Bad Request or  405 isMethodNotAllowed
+		.andExpect(status().is4xxClientError())
+		.andDo(log());
 	}
 	
 	@Test
 	public void canSearchByName_ShouldReturnItem() throws Exception {
 		mockMvc.perform(get("/items/search/findByName?name={name}", testItem.getName())
 				.contentType(MediaType.APPLICATION_JSON))
-		.andExpect(status().isOk());
+		.andExpect(status().isOk())
+		.andDo(log());
 		// TODO check expected name
 	}
 	
