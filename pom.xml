@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>cane.brothers.spring</groupId>
-	<artifactId>boot-example-parent</artifactId>
+	<artifactId>spring-boot-example-parent</artifactId>
 
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
@@ -32,7 +32,10 @@
 	</organization>
 
 	<modules>
-		<module>/h2-default</module>
+		<module>h2-default</module>
+		<module>prop-test</module>
+		<module>actuator-default</module>
+		<module>boot-security</module>
 	</modules>
 	
 </project>
