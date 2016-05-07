@@ -1,4 +1,7 @@
 # spring-boot example
+
+[![Build Status](https://travis-ci.org/webcane/spring-boot-example.svg?branch=master)](https://travis-ci.org/webcane/spring-boot-example)
+
 some spring boot examples:
 * prop-test
 * boot-security
