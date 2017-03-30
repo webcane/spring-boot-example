@@ -38,4 +38,12 @@ public class DemoApplicationTests {
                 .andExpect(status().isAccepted());
     }
 
+    @Test
+    public void testDemoWithResult() throws Exception {
+        mockMvc.perform(put("/demo/task/3/result")
+                .contentType(new MediaType(MediaType.APPLICATION_JSON.getType(),
+                        MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"))))
+                .andExpect(status().isAccepted());
+    }
+
 }
