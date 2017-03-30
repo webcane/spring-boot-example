@@ -7,6 +7,7 @@ some spring boot examples:
 * boot-security
 * actuator-default
 * h2-default
+* async-sample
 
 
 ## prop-test
@@ -95,4 +96,16 @@ spring.h2.console.enabled=true
 * удалить запись
  ```http
  DELETE localhost:8090/items/3
+ ```
+ 
+ ## async-sample
+ 
+ * Для запуска выполнения асинхронного задания необходимо выполнить следующий запрос: 
+ ```http
+ PUT localhost:5000/demo/task/3
+ ```
+ 
+ * контроллер получает реквест, запускает асинхронное задание и тут же возвращает ответ
+ ```
+ Все путем!
  ```
