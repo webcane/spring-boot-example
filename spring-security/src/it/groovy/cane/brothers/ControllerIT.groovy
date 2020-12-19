@@ -14,7 +14,10 @@ import org.springframework.test.context.TestPropertySource
  * @author mniedre
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestPropertySource(properties = "security.user.password=pass")
+@TestPropertySource(properties = [
+        "security.user.password=pass",
+        "security.enable-csrf=true",
+        "security.sessions=if_required"])
 class ControllerIT {
 
     @LocalServerPort
@@ -33,5 +36,15 @@ class ControllerIT {
                 .get("/")
                 .then()
                 .statusCode(HttpStatus.SC_UNAUTHORIZED);
+    }
+
+    @Test
+    void 'api call with authentication must succeed'() {
+        RestAssured.given()
+                .auth().preemptive().basic("user", "pass")
+                .when()
+                .get("/")
+                .then()
+                .statusCode(HttpStatus.SC_OK);
     }
 }
