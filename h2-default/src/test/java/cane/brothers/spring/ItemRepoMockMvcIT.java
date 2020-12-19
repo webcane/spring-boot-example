@@ -11,14 +11,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 
 import java.io.IOException;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -34,9 +32,8 @@ import cane.brothers.spring.repo.ItemRepository;
  * 
  * @author Mikhail Niedre
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = BootApplication.class)
 @WebAppConfiguration
+@ContextConfiguration(classes = BootApplication.class)
 public class ItemRepoMockMvcIT {
 
 	private MockMvc mockMvc;
@@ -59,7 +56,7 @@ public class ItemRepoMockMvcIT {
 	/**
 	 * do setup before any @Test
 	 */
-	@Before
+	@BeforeEach
 	public void setUp() {
 		testItem = new Item("test", "test item");
 		

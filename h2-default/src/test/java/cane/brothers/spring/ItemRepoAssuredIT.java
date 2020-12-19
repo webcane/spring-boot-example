@@ -1,20 +1,16 @@
 package cane.brothers.spring;
 
-import java.util.Arrays;
-
 import org.apache.http.HttpStatus;
 
 import org.hamcrest.Matchers;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.jayway.restassured.RestAssured;
@@ -23,14 +19,14 @@ import com.jayway.restassured.http.ContentType;
 import cane.brothers.spring.model.Item;
 import cane.brothers.spring.repo.ItemRepository;
 
-@RunWith(SpringJUnit4ClassRunner.class) // to create spring application context
-@SpringApplicationConfiguration(classes = BootApplication.class)
+@SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT,
+		classes = BootApplication.class) // to start embedded web server
 @WebAppConfiguration // to load WebApplicationContext
-@IntegrationTest("server.port:0") // to start embedded web server
 public class ItemRepoAssuredIT {
 
+	// @LocalServerPort
 	@Value("${local.server.port}")
-    int port;
+    int serverPort;
 	
 	@Autowired
 	ItemRepository repository;
@@ -39,15 +35,15 @@ public class ItemRepoAssuredIT {
 	Item testItem4 = new Item("test4", "test item 4");
 	Item editedItem;
 	
-	@Before
+	@BeforeEach
     public void setUp() {
+		RestAssured.port = serverPort;
+
 		testItem = new Item("test3", "test item 3");
 		editedItem = new Item("itemEd", "item descr");
 
-        repository.deleteAll();
-        repository.save(Arrays.asList(testItem));
-        
-        RestAssured.port = port;
+		repository.deleteAll();
+		repository.save(testItem);
     }
 
 	@Test
