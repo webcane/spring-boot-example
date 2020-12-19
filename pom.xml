@@ -34,7 +34,6 @@
 		<module>h2-default</module>
 		<module>prop-test</module>
 		<module>actuator-default</module>
-		<module>boot-security</module>
 		<module>async-sample</module>
 	</modules>
 	

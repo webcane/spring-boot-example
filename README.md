@@ -4,11 +4,9 @@
 
 some spring boot examples:
 * prop-test
-* boot-security
 * actuator-default
 * h2-default
 * async-sample
-
 
 ## prop-test
 
