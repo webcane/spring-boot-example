@@ -1,0 +1,26 @@
+http.authorizeRequests().anyRequest()).authenticated().and()).formLogin().and()).httpBasic();
+=======================
+    characterEncodingFilter
+    formContentFilter
+    requestContextFilter
+    springSecurityFilterChain
+        DefaultSecurityFilterChain 
+            [RequestMatcher=any request,
+                Filters=[
+                    org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@56d66b04,
+                    org.springframework.security.web.context.SecurityContextPersistenceFilter@14e5baad,
+                    org.springframework.security.web.header.HeaderWriterFilter@12296bb,
+                    org.springframework.security.web.csrf.CsrfFilter@5068f02e,
+                    org.springframework.security.web.authentication.logout.LogoutFilter@36a90989,
+                    org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@22c473f9,
+                    org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@1adf5339,
+                    org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@3cc3aeb5,
+                    org.springframework.security.web.authentication.www.BasicAuthenticationFilter@64dd7a2e,
+                    org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2e83ef4,
+                    org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@787d2bfd,
+                    org.springframework.security.web.authentication.AnonymousAuthenticationFilter@33c0bf09,
+                    org.springframework.security.web.session.SessionManagementFilter@28204e0e,
+                    org.springframework.security.web.access.ExceptionTranslationFilter@6493aef6,
+                    org.springframework.security.web.access.intercept.FilterSecurityInterceptor@2d6617c]
+                ]
+    tomcatWebSocketFilter
