@@ -118,14 +118,7 @@ class ControllerIntegrationTest {
 
     @Test
     void 'POST with session and CSRF token must succeed'() {
-        def sessionCookie = RestAssured.when()
-                .get("/")
-                .then()
-                .statusCode(HttpStatus.SC_UNAUTHORIZED)
-                .extract().cookie("JSESSIONID")
-
         Response response = RestAssured.given()
-                .sessionId(sessionCookie) // JSESSIONID
                 .auth()
                 .basic(usr, pwd)
                 .when()
