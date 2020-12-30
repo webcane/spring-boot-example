@@ -22,7 +22,7 @@ class Controller {
     }
 
     @GetMapping("/pretime")
-    @PreAuthorize("hasAnyAuthority('PRE')")
+    @PreAuthorize("hasAuthority('PRE')")
     String getPreTime() {
         return String.valueOf(System.currentTimeMillis())
     }
