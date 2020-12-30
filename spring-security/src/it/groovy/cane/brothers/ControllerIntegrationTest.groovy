@@ -37,6 +37,38 @@ class ControllerIntegrationTest {
         RestAssured.filters(new RequestLoggingFilter())
     }
 
+    // TODO
+//    Response response =
+//            given()
+//                    .headers(
+//                            "Authorization",
+//                            "Bearer " + bearerToken,
+//                            "Content-Type",
+//                            ContentType.JSON,
+//                            "Accept",
+//                            ContentType.JSON)
+//                    .when()
+//                    .get(url)
+//                    .then()
+//                    .contentType(ContentType.JSON)
+//                    .extract()
+//                    .response();
+
+
+//eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE2MDkyNDM0MTIsImV4cCI6MTY0MDc3OTQxMiwiYXVkIjoiYXBwLmNvbSIsInN1YiI6ImNhbmUiLCJncm91cHMiOlsiTE9HSU4iLCJBUFBfQURNSU4iXX0.J6Gi3vgFo631Wbfh6MakEYzZxkZuiken-hs5RFCFOts
+
+//{
+//    "iss": "Online JWT Builder",
+//    "iat": 1609243412,
+//    "exp": 1640779412,
+//    "aud": "app.com",
+//    "sub": "cane",
+//    "groups": [
+//        "LOGIN",
+//        "APP_ADMIN"
+//    ]
+//}
+
     @Test
     void 'api call without authentication must fail'() {
         RestAssured.when()
