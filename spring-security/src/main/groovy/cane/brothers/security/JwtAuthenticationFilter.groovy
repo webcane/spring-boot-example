@@ -37,7 +37,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         try {
-            UsernamePasswordAuthenticationToken authRequest = this.authenticationConverter.convert(request);
+            JwtAuthenticationToken authRequest = this.authenticationConverter.convert(request);
             if (authRequest == null) {
                 this.logger.trace("Did not process authentication request since failed to find "
                         + "username in Bearer Authorization header");

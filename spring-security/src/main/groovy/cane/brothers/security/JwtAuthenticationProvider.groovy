@@ -36,6 +36,11 @@ class JwtAuthenticationProvider extends AbstractUserDetailsAuthenticationProvide
     }
 
     @Override
+    public boolean supports(Class<?> authentication) {
+        return (JwtAuthenticationToken.class.isAssignableFrom(authentication));
+    }
+
+    @Override
     protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken) throws AuthenticationException {
     }
 
@@ -44,6 +49,7 @@ class JwtAuthenticationProvider extends AbstractUserDetailsAuthenticationProvide
         try {
             UserDetails loadedUser = this.getUserDetailsService().loadUserByUsername(username);
             if (loadedUser == null) {
+                // TODO ex
                 throw new InternalAuthenticationServiceException("UserDetailsService returned null, which is an interface contract violation");
             } else {
                 return loadedUser;

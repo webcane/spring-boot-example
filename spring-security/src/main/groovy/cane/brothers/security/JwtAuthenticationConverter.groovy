@@ -50,7 +50,7 @@ public class JwtAuthenticationConverter implements AuthenticationConverter {
 
 
     @Override
-    public UsernamePasswordAuthenticationToken convert(HttpServletRequest request) {
+    public JwtAuthenticationToken convert(HttpServletRequest request) {
         String header = request.getHeader(HEADER_STRING);
         if (header == null) {
             return null
@@ -89,7 +89,7 @@ public class JwtAuthenticationConverter implements AuthenticationConverter {
                 }
 
                 if (user != null) {
-                    UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(user, null, authorities)
+                    JwtAuthenticationToken result = new JwtAuthenticationToken(user, authorities)
                     result.setDetails(this.authenticationDetailsSource.buildDetails(request))
                     return result
                 } else {
