@@ -1,5 +1,11 @@
 package cane.brothers
 
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.annotation.Profile
+import org.springframework.security.crypto.password.PasswordEncoder
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 import io.restassured.RestAssured
 import io.restassured.filter.log.RequestLoggingFilter
 import io.restassured.filter.log.ResponseLoggingFilter
@@ -8,23 +14,22 @@ import org.apache.http.HttpStatus
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Value
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.security.SecurityProperties
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.web.server.LocalServerPort
 
 /**
  * @author mniedre
  */
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        properties = ["spring.security.user.name=user",
-                "spring.security.user.password=pass"])
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class ControllerIntegrationTest {
 
-    @Value('${spring.security.user.name}')
-    String usr
+    @Autowired
+    private SecurityProperties securityProperties
 
-    @Value('${spring.security.user.password}')
-    String pwd
+    @Value('${test.jwt.token}')
+    private String jwtToken;
 
     @LocalServerPort
     private int serverPort
@@ -37,87 +42,13 @@ class ControllerIntegrationTest {
         RestAssured.filters(new RequestLoggingFilter())
     }
 
-    // TODO
-//    Response response =
-//            given()
-//                    .headers(
-//                            "Authorization",
-//                            "Bearer " + bearerToken,
-//                            "Content-Type",
-//                            ContentType.JSON,
-//                            "Accept",
-//                            ContentType.JSON)
-//                    .when()
-//                    .get(url)
-//                    .then()
-//                    .contentType(ContentType.JSON)
-//                    .extract()
-//                    .response();
-
-
-//eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgSldUIEJ1aWxkZXIiLCJpYXQiOjE2MDkyNDM0MTIsImV4cCI6MTY0MDc3OTQxMiwiYXVkIjoiYXBwLmNvbSIsInN1YiI6ImNhbmUiLCJncm91cHMiOlsiTE9HSU4iLCJBUFBfQURNSU4iXX0.J6Gi3vgFo631Wbfh6MakEYzZxkZuiken-hs5RFCFOts
-
-//{
-//    "iss": "Online JWT Builder",
-//    "iat": 1609243412,
-//    "exp": 1640779412,
-//    "aud": "app.com",
-//    "sub": "cane",
-//    "groups": [
-//        "LOGIN",
-//        "APP_ADMIN"
-//    ]
-//}
-
     @Test
-    void 'api call without authentication must fail'() {
-        RestAssured.when()
-                .get("/")
-                .then()
-                .statusCode(HttpStatus.SC_UNAUTHORIZED)
-    }
-
-    @Test
-    void 'api call with authentication must succeed'() {
+    void 'api call without jwt authentication must fail'() {
         Response response = RestAssured.given()
                 .auth()
-                .preemptive()
-                .basic(usr, pwd)
+                .oauth2('')
                 .when()
-                .get("/")
-                .then()
-                .extract()
-                .response()
-
-        Assertions.assertEquals(HttpStatus.SC_OK, response.getStatusCode());
-    }
-
-    @Test
-    void 'JSESSIONID must be changed after login'() {
-        def sessionCookie = RestAssured.when()
-                .get("/")
-                .then()
-                .statusCode(HttpStatus.SC_UNAUTHORIZED)
-                .extract().cookie("JSESSIONID")
-
-        def newCookie = RestAssured.given()
-                .sessionId(sessionCookie) // JSESSIONID
-                .auth()
-                .basic(usr, pwd)
-                .when()
-                .get("/")
-                .then()
-                .statusCode(HttpStatus.SC_OK)
-                .extract().cookie("JSESSIONID")
-
-        Assertions.assertNotEquals(sessionCookie, newCookie)
-    }
-
-    @Test
-    void 'POST without session and CSRF token must return 401'() {
-        Response response = RestAssured
-                .when()
-                .post("/test/post")
+                .get("/time")
                 .then()
                 .extract()
                 .response()
@@ -126,21 +57,26 @@ class ControllerIntegrationTest {
     }
 
     @Test
-    void 'POST with session but without CSRF token must return 403'() {
+    void 'api call with jwt authentication must succeed'() {
         Response response = RestAssured.given()
                 .auth()
-                .preemptive()
-                .basic(usr, pwd)
+        .oauth2(jwtToken)
                 .when()
-                .get("/")
+                .get("/time")
                 .then()
                 .extract()
                 .response()
 
-        response = RestAssured.given()
-                .sessionId(response.getSessionId()) // JSESSIONID
+        Assertions.assertEquals(HttpStatus.SC_OK, response.getStatusCode());
+    }
+
+    @Test
+    void 'api call with jwt authentication but without required authority PRE must fail'() {
+        Response response = RestAssured.given()
+                .auth()
+                .oauth2(jwtToken)
                 .when()
-                .post("/test/post")
+                .get("/pretime")
                 .then()
                 .extract()
                 .response()
@@ -149,25 +85,32 @@ class ControllerIntegrationTest {
     }
 
     @Test
-    void 'POST with session and CSRF token must succeed'() {
+    void 'api call without basic authentication must fail'() {
+        RestAssured.when()
+                .get("/time")
+                .then()
+                .statusCode(HttpStatus.SC_UNAUTHORIZED)
+    }
+
+    @Test
+    void 'api call with basic authentication must succeed'() {
         Response response = RestAssured.given()
                 .auth()
-                .basic(usr, pwd)
+                .preemptive()
+                .basic(securityProperties.getUser().getName(),
+                        extractEncodedPassword(securityProperties.getUser().getPassword()))
                 .when()
-                .get("/")
+                .get("/time")
                 .then()
-                .statusCode(HttpStatus.SC_OK)
                 .extract()
                 .response()
 
-        RestAssured.given()
-                .sessionId(response.getSessionId()) // JSESSIONID
-                .cookie("XSRF-TOKEN", response.getCookie("XSRF-TOKEN"))
-                .header("X-XSRF-TOKEN", response.getCookie("XSRF-TOKEN"))
-                .when()
-                .post("/test/post")
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.SC_OK)
+        Assertions.assertEquals(HttpStatus.SC_OK, response.getStatusCode());
     }
+
+    private static String extractEncodedPassword(String prefixEncodedPassword) {
+        int start = prefixEncodedPassword.indexOf("}");
+        return prefixEncodedPassword.substring(start + 1);
+    }
+
 }
