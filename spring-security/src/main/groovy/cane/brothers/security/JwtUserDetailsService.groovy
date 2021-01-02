@@ -17,7 +17,11 @@ public class JwtUserDetailsService implements UserDetailsService {
         if(StringUtils.hasText(username)) {
 
             // TODO load user by name
-            return User.withUsername(username).build();
+            return User
+                    .withUsername(username)
+                    .password("")
+                    .authorities()
+                    .build();
         } else {
             new UsernameNotFoundException("User not found by name: " + username)
         }

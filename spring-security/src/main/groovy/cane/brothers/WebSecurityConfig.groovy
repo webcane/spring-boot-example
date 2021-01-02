@@ -4,6 +4,7 @@ import cane.brothers.security.JwtAuthenticationFilter;
 import cane.brothers.security.JwtAuthenticationProvider;
 import cane.brothers.security.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -25,6 +26,9 @@ import javax.servlet.http.HttpServletResponse;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private SecurityProperties securityProperties;
 
     @Autowired
     private JwtUserDetailsService userDetailsService;
@@ -49,9 +53,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
 
                 // Set unauthorized requests exception handler
-                .and().exceptionHandling().authenticationEntryPoint((request, response, ex) ->
-                     response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage())
-                 )
+                .and().exceptionHandling().authenticationEntryPoint({ request, response, ex ->
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage())
+                })
                 .and().httpBasic()
 
                 // Add JWT token filter
@@ -67,14 +71,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(jwtAuthenticationProvider());
         auth.inMemoryAuthentication()
-                .withUser("user")
-                .password(passwordEncoder().encode("pass"))
-                .roles("USER");
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+                .withUser(securityProperties.getUser().getName())
+                .password(securityProperties.getUser().getPassword())
+                .roles(securityProperties.getUser().getRoles().toArray(new String[0]));
     }
 
     @Bean
