@@ -2,7 +2,6 @@ package cane.brothers
 
 import cane.brothers.security.JwtAuthenticationFilter
 import cane.brothers.security.JwtAuthenticationProvider
-import cane.brothers.security.JwtUserDetailsService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.security.SecurityProperties
 import org.springframework.context.annotation.Bean
@@ -14,6 +13,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 
 import javax.servlet.http.HttpServletResponse
@@ -29,7 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private SecurityProperties securityProperties;
 
     @Autowired
-    private JwtUserDetailsService userDetailsService;
+    private UserDetailsService jwtUserDetailsService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -76,7 +76,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public AuthenticationProvider jwtAuthenticationProvider() {
-        return new JwtAuthenticationProvider(userDetailsService);
+        return new JwtAuthenticationProvider(jwtUserDetailsService);
     }
 
     @Bean
