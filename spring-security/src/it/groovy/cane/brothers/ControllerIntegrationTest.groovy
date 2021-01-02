@@ -71,6 +71,22 @@ class ControllerIntegrationTest {
     }
 
     @Test
+    void 'api call with invalid jwt authentication must fail'() {
+        String invalidToken = jwtToken.substring(0, jwtToken.length() - 1);
+
+        Response response = RestAssured.given()
+                .auth()
+                .oauth2(invalidToken)
+                .when()
+                .get("/time")
+                .then()
+                .extract()
+                .response()
+
+        Assertions.assertEquals(HttpStatus.SC_UNAUTHORIZED, response.getStatusCode());
+    }
+
+    @Test
     void 'api call with jwt authentication but without required authority PRE must fail'() {
         Response response = RestAssured.given()
                 .auth()
