@@ -3,7 +3,7 @@ package cane.brothers.security;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.userdetails.User;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * @author mniedre

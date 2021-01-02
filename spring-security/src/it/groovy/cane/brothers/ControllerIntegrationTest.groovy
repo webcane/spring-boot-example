@@ -1,11 +1,5 @@
 package cane.brothers
 
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.context.annotation.Profile
-import org.springframework.security.crypto.password.PasswordEncoder
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 import io.restassured.RestAssured
 import io.restassured.filter.log.RequestLoggingFilter
 import io.restassured.filter.log.ResponseLoggingFilter
@@ -15,6 +9,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.security.SecurityProperties
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.web.server.LocalServerPort
@@ -60,7 +55,7 @@ class ControllerIntegrationTest {
     void 'api call with jwt authentication must succeed'() {
         Response response = RestAssured.given()
                 .auth()
-        .oauth2(jwtToken)
+                .oauth2(jwtToken)
                 .when()
                 .get("/time")
                 .then()

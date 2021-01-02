@@ -1,9 +1,7 @@
-package cane.brothers.security;
+package cane.brothers.security
 
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-
-import java.util.Collection;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.GrantedAuthority
 
 /**
  * @author mniedre
