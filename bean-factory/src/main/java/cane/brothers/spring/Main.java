@@ -15,7 +15,7 @@ public class Main {
 
         System.out.println(context.getBeanDefinitionCount());
         beanReader.register(TerminatorQuote.class);
-        beanReader.register(QuoteApplicationListener.class);
+        beanReader.register(QuoteBeanPostProcessor.class);
         System.out.println(context.getBeanDefinitionCount());
         context.refresh();
 
