@@ -1,9 +1,11 @@
 package cane.brothers.spring.quote;
 
 import org.springframework.beans.factory.FactoryBean;
+import org.springframework.beans.factory.config.AbstractFactoryBean;
 
 /**
  * Created by cane
+ * @see AbstractFactoryBean
  */
 public class QuoteFactory implements FactoryBean<Quote> {
 
