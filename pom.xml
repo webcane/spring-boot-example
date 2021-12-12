@@ -38,6 +38,7 @@
 		<module>spring-security</module>
 		<module>context</module>
 		<module>bean-factory</module>
+		<module>factory-bean</module>
 	</modules>
 	
 	<dependencies>

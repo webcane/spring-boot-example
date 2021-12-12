@@ -9,6 +9,7 @@ some spring boot examples:
 * async-sample
 * application context
 * bean factory
+* FactoryBean
 
 ## prop-test
 
@@ -118,3 +119,7 @@ spring.h2.console.enabled=true
  ## bean-factory
  
  * Пример показывает как использовать `AnnotatedBeanDefinitionReader` класс для програмной регистрации бинов в Spring Context'е.
+ 
+ ## FactoryBean
+
+Пример показывает как использовать `FactoryBean` класс для изменения бинов перед загрузкой в Spring Context'е.
