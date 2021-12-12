@@ -1,9 +1,12 @@
-package cane.brothers.quote;
+package cane.brothers.spring.quote;
+
+import org.springframework.stereotype.Component;
 
 /**
  * Created by cane
  */
-public class TerminatorQuote implements IQuote {
+@Component
+public class TerminatorQuote implements Quote {
 
     private String message;
 
