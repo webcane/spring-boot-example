@@ -36,6 +36,7 @@
 		<module>actuator-default</module>
 		<module>async-sample</module>
 		<module>spring-security</module>
+		<module>context</module>
 	</modules>
 	
 	<dependencies>
