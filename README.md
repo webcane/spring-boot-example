@@ -7,6 +7,8 @@ some spring boot examples:
 * actuator-default
 * h2-default
 * async-sample
+* application context
+* bean factory
 
 ## prop-test
 
@@ -107,3 +109,12 @@ spring.h2.console.enabled=true
  ```
  Все путем!
  ```
+
+
+ ## context
+ 
+ * Пример показывает как использовать `AnnotationConfigApplicationContext` класс для создания Spring Context.
+ 
+ ## bean-factory
+ 
+ * Пример показывает как использовать `AnnotatedBeanDefinitionReader` класс для програмной регистрации бинов в Spring Context'е.
