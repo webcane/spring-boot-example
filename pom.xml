@@ -37,6 +37,7 @@
 		<module>async-sample</module>
 		<module>spring-security</module>
 		<module>context</module>
+		<module>bean-factory</module>
 	</modules>
 	
 	<dependencies>
