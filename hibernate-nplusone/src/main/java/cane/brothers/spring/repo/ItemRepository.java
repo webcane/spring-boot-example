@@ -1,6 +1,7 @@
 package cane.brothers.spring.repo;
 
 import cane.brothers.spring.model.Item;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,8 +19,13 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
 	List<Item> findByName(@Param("name") String name);
 
-	@Query("SELECT i from ITEMS i")
-	List<Item> findAllItems();
+	List<Item> findAllBy();
+
+	@Query("SELECT i from ITEMS i LEFT JOIN FETCH i.characteristics")
+	List<Item> fetchAllItems();
+
+	@EntityGraph(attributePaths = {"characteristics"})
+	List<Item> findAll();
 
 	Item findByCharacteristics(long characteristicId);
 }

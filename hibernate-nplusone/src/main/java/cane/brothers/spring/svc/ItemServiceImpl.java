@@ -28,7 +28,9 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public void findItems() {
         LOGGER.info("Find items info");
-        List<Item> items = itemRepository.findAllItems();
+        List<Item> items = itemRepository.findAllBy();
+        // List<Item> items = itemRepository.fetchAllItems();
+        // List<Item> items = itemRepository.findAll();
         for (Item item : items) {
             String message = item.getName();
 
