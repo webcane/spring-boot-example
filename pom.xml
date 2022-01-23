@@ -39,7 +39,8 @@
 		<module>context</module>
 		<module>bean-factory</module>
 		<module>factory-bean</module>
-	</modules>
+        <module>hibernate-nplusone</module>
+    </modules>
 	
 	<dependencies>
 		<dependency>
