@@ -6,7 +6,8 @@ some spring boot examples:
 * prop-test
 * actuator-default
 * h2-default
-* async-sample
+* h2-default
+* hibernate-nplusone
 * application context
 * bean factory
 * FactoryBean
@@ -98,6 +99,9 @@ spring.h2.console.enabled=true
  ```http
  DELETE localhost:8090/items/3
  ```
+
+## hibernate N+1 example
+Пример того как решать проблему N+1 для hibernate
  
  ## async-sample
  
